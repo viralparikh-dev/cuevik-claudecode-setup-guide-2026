@@ -33,6 +33,10 @@ Setup checklist and approved skills for developers using Claude Code on Windows,
 
 The script is safe to run again: anything already installed is skipped. It ends with a summary showing what was installed, skipped or failed.
 
+## Install flow
+
+![Install flow: the script checks for Git and the Claude Code CLI, adds the plugin marketplaces, installs the terminal skills if Node.js and uv are present, prints a summary, then asks you to restart.](docs/install-flow.png)
+
 ## Before you run it
 
 - Review the script; the full listing is also in the guide's appendix.

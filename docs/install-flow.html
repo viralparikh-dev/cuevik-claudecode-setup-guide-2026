@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code Skills Install Flow</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #f4f8fb;   /* Cueserve cloud tint */
+      --color-ink:     #0c385a;   /* Cueserve ocean depth */
+      --color-muted:   #4a6a82;
+      --color-accent:  #1a6ca5;   /* Meridian blue, darkened to clear 4.5:1 */
+      --font-sans:     'DM Sans', system-ui, sans-serif;
+      --font-display:  'Space Grotesk', system-ui, sans-serif;
+      --font-mono:     'JetBrains Mono', ui-monospace, monospace;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+
+    .frame { max-width: 800px; width: 100%; }
+    /* The SVG holds its readable width (min-width == the viewBox width, so the
+       type ramp is never silently scaled down). This wrapper lets a narrow
+       screen scroll the diagram instead of the whole page. */
+    .diagram-container { width: 100%; overflow-x: auto; }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      color: var(--color-ink);
+      margin-bottom: 1.5rem;
+    }
+
+    svg { width: 100%; min-width: 720px; display: block; }
+    /* Paper has no scrollbar, so the local scroller would clip instead of
+       scroll. Let the diagram scale down to the sheet: smaller but whole
+       beats sharp but cut off. Must come after the svg rule above - a media
+       query adds no specificity, so a later plain rule would win. */
+    @media print {
+      .diagram-container { overflow-x: visible; }
+      svg { min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Flowchart · Cueserve</p>
+    <h1>Claude Code skills: installation flow</h1>
+
+    <div class="diagram-container">
+      <svg viewBox="0 0 720 736" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="install-flow-title install-flow-desc">
+        <title id="install-flow-title">Claude Code skills installation flow</title>
+        <desc id="install-flow-desc">Flowchart of Install-ClaudeSkills.ps1: it stops if Git is missing, installs the Claude Code CLI if absent, adds plugin marketplaces, installs terminal skills when Node.js or uv are present, then prints a summary and asks for a restart.</desc>
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4a6a82"/></marker>
+          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1a6ca5"/></marker>
+          <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0e4a73"/></marker>
+        </defs>
+
+        <rect width="100%" height="100%" fill="#f4f8fb"/>
+
+        <!-- ARROWS (drawn first so nodes sit on top) -->
+        <g fill="none" stroke="#4a6a82" stroke-width="1" marker-end="url(#arrow)">
+          <path d="M190,88 V116"/>
+          <path d="M300,152 H460"/>
+          <path d="M190,188 V216"/>
+          <path d="M300,252 H460"/>
+          <path d="M190,288 V316"/>
+          <path d="M570,280 V340 A8,8 0 0 1 562,348 H340"/>
+          <path d="M190,380 V408"/>
+          <path d="M190,476 V504"/>
+          <path d="M190,556 V584"/>
+        </g>
+
+        <!-- ARROW LABELS -->
+        <rect x="366" y="132" width="28" height="12" rx="2" fill="#f4f8fb"/>
+        <text x="380" y="141" fill="#4f6f87" font-size="8" font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">NO</text>
+        <rect x="198" y="196" width="32" height="12" rx="2" fill="#f4f8fb"/>
+        <text x="214" y="205" fill="#4f6f87" font-size="8" font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">YES</text>
+        <rect x="366" y="232" width="28" height="12" rx="2" fill="#f4f8fb"/>
+        <text x="380" y="241" fill="#4f6f87" font-size="8" font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">NO</text>
+        <rect x="198" y="296" width="32" height="12" rx="2" fill="#f4f8fb"/>
+        <text x="214" y="305" fill="#4f6f87" font-size="8" font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">YES</text>
+
+        <!-- 1. START -->
+        <rect x="40" y="40" width="300" height="48" rx="24" fill="#f4f8fb"/>
+        <rect x="40" y="40" width="300" height="48" rx="24" fill="#ffffff" stroke="#0c385a" stroke-width="1"/>
+        <text x="190" y="61" fill="#0c385a" font-size="12" font-weight="600" font-family="'DM Sans', system-ui, sans-serif" text-anchor="middle">Run the install script</text>
+        <text x="190" y="77" fill="#4a6a82" font-size="9" font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">Install-ClaudeSkills.ps1</text>
+
+        <!-- 2. DECISION: Git -->
+        <polygon points="190,116 300,152 190,188 80,152" fill="#f4f8fb"/>
+        <polygon points="190,116 300,152 190,188 80,152" fill="#ffffff" stroke="#0c385a" stroke-width="1"/>
+        <text x="190" y="156" fill="#0c385a" font-size="12" font-weight="600" font-family="'DM Sans', system-ui, sans-serif" text-anchor="middle">Git installed?</text>
+
+        <!-- 3. STOP -->
+        <rect x="460" y="128" width="220" height="48" rx="24" fill="#f4f8fb"/>
+        <rect x="460" y="128" width="220" height="48" rx="24" fill="#ffffff" stroke="#0c385a" stroke-width="1"/>
+        <text x="570" y="149" fill="#0c385a" font-size="12" font-weight="600" font-family="'DM Sans', system-ui, sans-serif" text-anchor="middle">Stop</text>
+        <text x="570" y="165" fill="#4a6a82" font-size="9" font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">install Git, then rerun</text>
+
+        <!-- 4. DECISION: Claude CLI -->
+        <polygon points="190,216 300,252 190,288 80,252" fill="#f4f8fb"/>
+        <polygon points="190,216 300,252 190,288 80,252" fill="#ffffff" stroke="#0c385a" stroke-width="1"/>
+        <text x="190" y="256" fill="#0c385a" font-size="12" font-weight="600" font-family="'DM Sans', system-ui, sans-serif" text-anchor="middle">Claude CLI present?</text>
+
+        <!-- 5. STEP: install CLI -->
+        <rect x="460" y="224" width="220" height="56" rx="6" fill="#f4f8fb"/>
+        <rect x="460" y="224" width="220" height="56" rx="6" fill="#ffffff" stroke="#0c385a" stroke-width="1"/>
+        <text x="570" y="249" fill="#0c385a" font-size="12" font-weight="600" font-family="'DM Sans', system-ui, sans-serif" text-anchor="middle">Install Claude Code CLI</text>
+        <text x="570" y="265" fill="#4a6a82" font-size="9" font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">official installer</text>
+
+        <!-- 6. FOCAL STEP: marketplaces + plugins -->
+        <rect x="40" y="316" width="300" height="64" rx="6" fill="#f4f8fb"/>
+        <rect x="40" y="316" width="300" height="64" rx="6" fill="rgba(35,132,198,0.08)" stroke="#1a6ca5" stroke-width="1.2"/>
+        <text x="190" y="345" fill="#0c385a" font-size="12" font-weight="600" font-family="'DM Sans', system-ui, sans-serif" text-anchor="middle">Add marketplaces, install plugins</text>
+        <text x="190" y="361" fill="#4a6a82" font-size="9" font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">6 marketplaces · 11 plugins · skips existing</text>
+
+        <!-- 7. OPTIONAL STEP: terminal skills -->
+        <rect x="40" y="408" width="300" height="68" rx="6" fill="#f4f8fb"/>
+        <rect x="40" y="408" width="300" height="68" rx="6" fill="rgba(12,56,90,0.02)" stroke="#4a6a82" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="190" y="436" fill="#0c385a" font-size="12" font-weight="600" font-family="'DM Sans', system-ui, sans-serif" text-anchor="middle">Install terminal skills</text>
+        <text x="190" y="452" fill="#4a6a82" font-size="9" font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">Cloudflare audit (Node.js) · Graphify (uv)</text>
+        <text x="190" y="464" fill="#4a6a82" font-size="9" font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">skipped with a warning if missing</text>
+
+        <!-- 8. STEP: summary -->
+        <rect x="40" y="504" width="300" height="52" rx="6" fill="#f4f8fb"/>
+        <rect x="40" y="504" width="300" height="52" rx="6" fill="#ffffff" stroke="#0c385a" stroke-width="1"/>
+        <text x="190" y="527" fill="#0c385a" font-size="12" font-weight="600" font-family="'DM Sans', system-ui, sans-serif" text-anchor="middle">Print summary</text>
+        <text x="190" y="543" fill="#4a6a82" font-size="9" font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">installed · skipped · failed</text>
+
+        <!-- 9. END -->
+        <rect x="40" y="584" width="300" height="72" rx="36" fill="#f4f8fb"/>
+        <rect x="40" y="584" width="300" height="72" rx="36" fill="#ffffff" stroke="#0c385a" stroke-width="1"/>
+        <text x="190" y="609" fill="#0c385a" font-size="12" font-weight="600" font-family="'DM Sans', system-ui, sans-serif" text-anchor="middle">Restart VS Code and the desktop app</text>
+        <text x="190" y="625" fill="#4a6a82" font-size="9" font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">or run /reload-plugins in open sessions</text>
+        <text x="190" y="637" fill="#4a6a82" font-size="9" font-family="'JetBrains Mono', ui-monospace, monospace" text-anchor="middle">then /impeccable init per front-end project</text>
+
+        <!-- LEGEND (horizontal strip) -->
+        <line x1="40" y1="680" x2="680" y2="680" stroke="rgba(12,56,90,0.12)" stroke-width="0.8"/>
+        <text x="40" y="704" fill="#4a6a82" font-size="8" font-family="'JetBrains Mono', ui-monospace, monospace" letter-spacing="0.14em">LEGEND</text>
+
+        <rect x="116" y="696" width="20" height="10" rx="5" fill="#ffffff" stroke="#0c385a" stroke-width="1"/>
+        <text x="144" y="704" fill="#4a6a82" font-size="8" font-family="'JetBrains Mono', ui-monospace, monospace" letter-spacing="0.06em">START / END</text>
+
+        <polygon points="228,701 238,695 248,701 238,707" fill="#ffffff" stroke="#0c385a" stroke-width="1"/>
+        <text x="256" y="704" fill="#4a6a82" font-size="8" font-family="'JetBrains Mono', ui-monospace, monospace" letter-spacing="0.06em">DECISION</text>
+
+        <rect x="328" y="696" width="20" height="10" rx="2" fill="#ffffff" stroke="#0c385a" stroke-width="1"/>
+        <text x="356" y="704" fill="#4a6a82" font-size="8" font-family="'JetBrains Mono', ui-monospace, monospace" letter-spacing="0.06em">STEP</text>
+
+        <rect x="416" y="696" width="20" height="10" rx="2" fill="rgba(12,56,90,0.02)" stroke="#4a6a82" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="444" y="704" fill="#4a6a82" font-size="8" font-family="'JetBrains Mono', ui-monospace, monospace" letter-spacing="0.06em">MAY BE SKIPPED</text>
+
+        <rect x="552" y="696" width="20" height="10" rx="2" fill="rgba(35,132,198,0.08)" stroke="#1a6ca5" stroke-width="1.2"/>
+        <text x="580" y="704" fill="#4a6a82" font-size="8" font-family="'JetBrains Mono', ui-monospace, monospace" letter-spacing="0.06em">CORE STEP</text>
+      </svg>
+    </div>
+  </div>
+</body>
+</html>
