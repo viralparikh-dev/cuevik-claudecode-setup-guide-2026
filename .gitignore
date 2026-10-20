@@ -1,0 +1,11 @@
+# Word lock/temp files
+~$*
+*.tmp
+
+# Local Claude Code settings
+.claude/settings.local.json
+
+# OS files
+Thumbs.db
+.DS_Store
+desktop.ini
