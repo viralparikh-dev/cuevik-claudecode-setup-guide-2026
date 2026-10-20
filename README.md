@@ -5,7 +5,7 @@ Setup checklist and approved skills for developers using Claude Code on Windows,
 ## What's in this repo
 
 | File | Purpose |
-|---|---|
+| --- | --- |
 | `ClaudeCode-2026Setup-n-Skills.docx` | The guide: onboarding checklist, approved skills, how to install them, and a VS Code vs desktop app quick reference. |
 | `Install-ClaudeSkills.ps1` | Installs every approved skill in one run. |
 
@@ -24,7 +24,7 @@ Setup checklist and approved skills for developers using Claude Code on Windows,
 ## What the script needs
 
 | Requirement | Needed for | If missing |
-|---|---|---|
+| --- | --- | --- |
 | Git for Windows | Adding plugin marketplaces | Script stops |
 | Claude Code CLI (`claude`) | Installing plugins | Script installs it |
 | Node.js (`npx`) | Cloudflare Security Audit skill | Skipped with a warning |
