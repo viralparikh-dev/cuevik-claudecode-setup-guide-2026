@@ -37,4 +37,4 @@ The script is safe to run again: anything already installed is skipped. It ends 
 
 - Review the script; the full listing is also in the guide's appendix.
 - Most skills are community-built and run with your agent's permissions. Skills marked **(official)** in the guide are built by Anthropic.
-- The Cloudflare step may ask you to confirm in the terminal.
+- The Cloudflare step asks "Proceed with installation?" in the terminal. Answer Yes to continue.
